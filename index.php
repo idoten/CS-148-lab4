@@ -7,7 +7,10 @@ include 'top.php';
 //##############################################################################
 $records = '';
 
-$query = 'SELECT fldTrailName, fldTotalDistance, fldHikingTime, fldVerticalRise, fldRating FROM tblTrails';
+$query = 'SELECT fldTrailName, fldTotalDistance, fldHikingTime, 
+    fldVerticalRise, fldRating 
+FROM tblTrails
+ORDER BY fldTrailName';
 
 // NOTE: The full method call would be:
 //           $thisDatabaseReader->querySecurityOk($query, 0, 0, 0, 0, 0)
@@ -26,7 +29,9 @@ if (DEBUG) {
 print '<h2 class="alternateRows">Trails!</h2>';
 if (is_array($records)) {
     foreach ($records as $record) {
-        print '<p>' . $record['fldTrailName'] . ' ' . $record['fldTotalDistance'] . ' ' . $record['fldHikingTime'] . ' ' . $record['fldVerticalRise'] . ' ' . $record['fldRating'] . '</p>';
+        print '<p>' . $record['fldTrailName'] . ' ' . $record['fldTotalDistance'] 
+                . ' ' . $record['fldHikingTime'] . ' ' . $record['fldVerticalRise'] 
+                . ' ' . $record['fldRating'] . '</p>';
     }
 }
 include 'footer.php';
