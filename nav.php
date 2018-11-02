@@ -20,7 +20,7 @@
         if ($PATH_PARTS['filename'] == 'sampleQuery') {
             print ' class="activePage" ';
         }
-        print '><a href="sampleQuery.php">Sample SELECT</a></li>';
+        print '><a href="index.php">Sample SELECT</a></li>';
        
         print '<li ';
         if ($PATH_PARTS['filename'] == 'sampleQuery2') {
