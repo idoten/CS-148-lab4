@@ -17,12 +17,6 @@
         print '><a href="../sitemap.php">Sitemap</a></li>';
        
         print '<li ';
-        if ($PATH_PARTS['filename'] == 'sampleQuery') {
-            print ' class="activePage" ';
-        }
-        print '><a href="index.php">Sample SELECT</a></li>';
-       
-        print '<li ';
         if ($PATH_PARTS['filename'] == 'sampleQuery2') {
             print ' class="activePage" ';
         }
