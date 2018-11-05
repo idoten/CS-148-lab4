@@ -19,14 +19,42 @@
         <![endif]-->
 
         <link rel="stylesheet" href="css/base.css" type="text/css" media="screen">
-
+       
         <?php
+        
+        $debug = false;
+        
+        // This if statement allows us in the classroom to see what our variables are
+        // This is NEVER done on a live site 
+        if (isset($_GET["debug"])) {
+            $debug = true;
+        } 
+        // %^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
+        // PATH SETUP
+
+        $domain = '//';
+        $server = htmlentities($_SERVER['SERVER_NAME'], ENT_QUOTES, 'UTF-8');
+        $domain .= $server;
+        if ($debug) {
+            print '<p>php Self: ' . $phpSelf;
+            print '<pdomain: ' . $domain;
+            print '<p>Path Parts<pre>';
+            print_r($path_parts);
+            print '</pre></p>';
+        }
+
         // %^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
         //
         // inlcude all libraries. 
         // 
         // %^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
         print '<!-- begin including libraries -->';
+        
+        require_once 'lib/security.php';
+        
+        include_once 'lib/validation-functions.php';
+        
+        include_once 'lib/mail-message.php';     
         
         include 'lib/constants.php';
 
@@ -42,4 +70,8 @@
     print '<body id="' . $PATH_PARTS['filename'] . '">';
     include 'header.php';
     include 'nav.php';
+    
+    if ($debug) {
+        print '<p>DEBUG MODE IS ON</p>';
+    }
     ?>
