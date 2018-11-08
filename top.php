@@ -54,7 +54,7 @@
         
         include_once 'lib/validation-functions.php';
         
-        include_once 'lib/mail-message.php';     
+        //include_once 'lib/mail-message.php';     
         
         include 'lib/constants.php';
 

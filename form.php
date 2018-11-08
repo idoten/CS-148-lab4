@@ -21,16 +21,18 @@ print PHP_EOL . '<!-- SECTION: 1b form variables -->' . PHP_EOL;
 //
 // Initialize variables one for each form element
 // in the order they appear on the form
-$firstName = "";       
-$email = "your-email@uvm.edu";     
+//$firstName = "";       
+//$email = "your-email@uvm.edu";
+$hikers = "hikers"; // hikers list box
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
 print PHP_EOL . '<!-- SECTION: 1c form error flags -->' . PHP_EOL;
 //
 // Initialize Error Flags one for each form element we validate
 // in the order they appear on the form
-$firstNameERROR = false;
-$emailERROR = false;       
+//$firstNameERROR = false;
+//$emailERROR = false;     
+$hikersError = false;
 ////%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
 print PHP_EOL . '<!-- SECTION: 1d misc variables -->' . PHP_EOL;
@@ -39,7 +41,7 @@ print PHP_EOL . '<!-- SECTION: 1d misc variables -->' . PHP_EOL;
 $errorMsg = array();       
  
 // have we mailed the information to the user, flag variable?
-$mailed = false;       
+//$mailed = false;       
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 //
 print PHP_EOL . '<!-- SECTION: 2 Process for when the form is submitted -->' . PHP_EOL;
@@ -62,11 +64,11 @@ if (isset($_POST["btnSubmit"])) {
     print PHP_EOL . '<!-- SECTION: 2b Sanitize (clean) data  -->' . PHP_EOL;
     // remove any potential JavaScript or html code from users input on the
     // form. Note it is best to follow the same order as declared in section 1c.
-    $firstName = htmlentities($_POST["txtFirstName"], ENT_QUOTES, "UTF-8");       
+    //$firstName = htmlentities($_POST["txtFirstName"], ENT_QUOTES, "UTF-8");       
     
-    $email = filter_var($_POST["txtEmail"], FILTER_SANITIZE_EMAIL);       
+    //$email = filter_var($_POST["txtEmail"], FILTER_SANITIZE_EMAIL);       
         
-    
+    $hikers = htmlentities($_POST["lstFavoriteHiker"], ENT_QUOTES, "UTF-8");
     
     
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -79,21 +81,26 @@ if (isset($_POST["btnSubmit"])) {
     // order that the elements appear on your form so that the error messages
     // will be in the order they appear. errorMsg will be displayed on the form
     // see section 3b. The error flag ($emailERROR) will be used in section 3c.
-    if ($firstName == "") {
-        $errorMsg[] = "Please enter your first name";
-        $firstNameERROR = true;
-    } elseif (!verifyAlphaNum($firstName)) {
-        $errorMsg[] = "Your first name appears to have extra character.";
-        $firstNameERROR = true;
-    }
+    //if ($firstName == "") {
+    //    $errorMsg[] = "Please enter your first name";
+    //    $firstNameERROR = true;
+    //} elseif (!verifyAlphaNum($firstName)) {
+    //    $errorMsg[] = "Your first name appears to have extra character.";
+    //    $firstNameERROR = true;
+    //}
     
-    if ($email == "") {
-        $errorMsg[] = 'Please enter your email address';
-        $emailERROR = true;
-    } elseif (!verifyEmail($email)) {       
-        $errorMsg[] = 'Your email address appears to be incorrect.';
-        $emailERROR = true;    
-    }    
+    //if ($email == "") {
+    //    $errorMsg[] = 'Please enter your email address';
+    //    $emailERROR = true;
+    //} elseif (!verifyEmail($email)) {       
+    //    $errorMsg[] = 'Your email address appears to be incorrect.';
+    //    $emailERROR = true;    
+    //}    
+    
+    if ($hikers == "") {
+    $errorMsg[] = "Please choose a favorite hiker";
+    $hikersError = true;
+}
     
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     //
@@ -115,25 +122,26 @@ if (isset($_POST["btnSubmit"])) {
         $dataRecord = array();       
         
         // assign values to the dataRecord array
-        $dataRecord[] = $firstName;
-        $dataRecord[] = $email;
+        //$dataRecord[] = $firstName;
+        //$dataRecord[] = $email;
+        $dataRecord[] = $hikers;
     
         // setup csv file
         $myFolder = 'data/';
-        $myFileName = 'registration';
+        $myFileName = 'lab4';
         $fileExt = '.csv';
         $filename = $myFolder . $myFileName . $fileExt;
     
         if ($debug) print PHP_EOL . '<p>filename is ' . $filename;
     
         // now we just open the file for append
-        $file = fopen($filename, 'a');
+        //$file = fopen($filename, 'a');
     
         // write the forms informations
-        fputcsv($file, $dataRecord);
+        //fputcsv($file, $dataRecord);
     
         // close the file
-        fclose($file);       
+        //fclose($file);       
     
      
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -158,17 +166,17 @@ if (isset($_POST["btnSubmit"])) {
         
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         //
-        print PHP_EOL . '<!-- SECTION: 2g Mail to user -->' . PHP_EOL;
+        //print PHP_EOL . '<!-- SECTION: 2g Mail to user -->' . PHP_EOL;
         //
         // Process for mailing a message which contains the forms data
-        // the message was built in section 2f.
-        $to = $email; // the person who filled out the form     
-        $cc = '';       
-        $bcc = '';
-        $from = 'WRONG site <customer.service@your-site.com>';
-        // subject of mail should make sense to your form
-        $subject = 'Groovy: ';
-        $mailed = sendMail($to, $cc, $bcc, $from, $subject, $message);
+        //// the message was built in section 2f.
+        //$to = $email; // the person who filled out the form     
+        //$cc = '';       
+        //$bcc = '';
+        //$from = 'WRONG site <customer.service@your-site.com>';
+        //// subject of mail should make sense to your form
+        //$subject = 'Groovy: ';
+        //$mailed = sendMail($to, $cc, $bcc, $from, $subject, $message);
     } // end form is valid     
 }   // ends if form was submitted.
 //#############################################################################
@@ -189,18 +197,18 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
     if (isset($_POST["btnSubmit"]) AND empty($errorMsg)) { // closing of if marked with: end body submit
         print '<h2>Thank you for providing your information.</h2>';
     
-        print '<p>For your records a copy of this data has ';
-        if (!$mailed) {    
-            print "not ";         
-        }
+        //print '<p>For your records a copy of this data has ';
+        //if (!$mailed) {    
+        //    print "not ";         
+        //}
     
-        print 'been sent:</p>';
-        print '<p>To: ' . $email . '</p>';
+        //print 'been sent:</p>';
+        //print '<p>To: ' . $email . '</p>';
     
         print $message;
     } else {       
-     print '<h2>Register Today</h2>';
-     print '<p class="form-heading">Your information will greatly help us with our research.</p>';
+     print '<h2>Pick a favorite hiker</h2>';
+     print '<p class="form-heading">Thank you for your help.</p>';
      
         //####################################
         //
@@ -238,45 +246,36 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
 
 
 <form action = "<?php print $phpSelf; ?>"
-          id = "frmRegister"
+          id = "frmHiker"
           method = "post">
 
-                <fieldset class = "contact">
-                    <legend>Contact Information</legend>
-                    <p>
-                        <label class="required" for="txtFirstName">First Name</label>  
-                        <input autofocus
-                                <?php if ($firstNameERROR) print 'class="mistake"'; ?>
-                                id="txtFirstName"
-                                maxlength="45"
-                                name="txtFirstName"
-                                onfocus="this.select()"
-                                placeholder="Enter your first name"
-                                tabindex="100"
-                                type="text"
-                                value="<?php print $firstName; ?>"                    
-                        >                    
-                    </p>
+          <fieldset  class="listbox <?php if ($hikersERROR) print ' mistake'; ?>">
+            <p>
+            <legend>Favorite Hiker</legend>
+                <select id="FavoriteHiker" 
+                        name="lstFavoriteHiker" 
+                        tabindex="520" >
+                    <option <?php if ($hikers == "Ian Doten") print " selected "; ?>
+                        value="Ian Doten">Ian Doten</option>
+
+                    <option <?php if ($hikers == "Emalee Sprague") print " selected "; ?>
+                        value="Emalee Sprague">Emalee Sprague</option>
+
+                    <option <?php if ($hikers == "Heidi Grace") print " selected "; ?>
+                        value="Heidi Grace">Heidi Grace</option>
                     
-                    <p>
-                        <label class = "required" for = "txtEmail">Email</label>
-                            <input 
-                                   <?php if ($emailERROR) print 'class="mistake"'; ?>
-                                   id = "txtEmail"     
-                                   maxlength = "45"
-                                   name = "txtEmail"
-                                   onfocus = "this.select()"
-                                   placeholder = "Enter your email address"
-                                   tabindex = "120"
-                                   type = "text"
-                                   value = "<?php print $email; ?>"
-                            >
-                    </p>     
-                </fieldset> <!-- ends contact -->
+                    <option <?php if ($hikers == "Conor Barrett") print " selected "; ?>
+                        value="Conor Barrett">Conor Barrett</option>
+                    
+                    <option <?php if ($hikers == "Howie Woods") print " selected "; ?>
+                        value="Howie Woods">Howie Woods</option>
+        </select>
+    </p>
+</fieldset> <!-- ends contact -->
 
             <fieldset class="buttons">
                 <legend></legend>
-                <input class = "button" id = "btnSubmit" name = "btnSubmit" tabindex = "900" type = "submit" value = "Register" >
+                <input class = "button" id = "btnSubmit" name = "btnSubmit" tabindex = "900" type = "submit" value = "Submit" >
             </fieldset> <!-- ends buttons -->
 </form>     
 <?php
