@@ -1,7 +1,17 @@
 <?php
 include 'top.php';
+
+//$records = '';
+
+//$query = 'SELECT pmkHikersId, fldFirstName, fldLastName, FROM tblHikers';
+
+// NOTE: The full method call would be:
+//           $thisDatabaseReader->querySecurityOk($query, 0, 0, 0, 0, 0)
+//if ($thisDatabaseReader->querySecurityOk($query, 0)) {
+    //$query = $thisDatabaseReader->sanitizeQuery($query);
+    //$records = $thisDatabaseReader->select($query, '');
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
-//       
+//     
 print  PHP_EOL . '<!-- SECTION: 1 Initialize variables -->' . PHP_EOL;       
 // These variables are used in both sections 2 and 3, otherwise we would
 // declare them in the section we needed them
@@ -24,6 +34,7 @@ print PHP_EOL . '<!-- SECTION: 1b form variables -->' . PHP_EOL;
 //$firstName = "";       
 //$email = "your-email@uvm.edu";
 $hikers = "hikers"; // hikers list box
+$date = ""; //date text box
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
 print PHP_EOL . '<!-- SECTION: 1c form error flags -->' . PHP_EOL;
@@ -32,7 +43,8 @@ print PHP_EOL . '<!-- SECTION: 1c form error flags -->' . PHP_EOL;
 // in the order they appear on the form
 //$firstNameERROR = false;
 //$emailERROR = false;     
-$hikersError = false;
+$hikersERROR = false;
+$dateERROR = false;
 ////%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
 print PHP_EOL . '<!-- SECTION: 1d misc variables -->' . PHP_EOL;
@@ -69,6 +81,7 @@ if (isset($_POST["btnSubmit"])) {
     //$email = filter_var($_POST["txtEmail"], FILTER_SANITIZE_EMAIL);       
         
     $hikers = htmlentities($_POST["lstFavoriteHiker"], ENT_QUOTES, "UTF-8");
+    $date = htmlentities($_POST["txtDate"], ENT_QUOTES, "UTF-8");
     
     
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -98,9 +111,16 @@ if (isset($_POST["btnSubmit"])) {
     //}    
     
     if ($hikers == "") {
-    $errorMsg[] = "Please choose a favorite hiker";
-    $hikersError = true;
-}
+        $errorMsg[] = "Please choose a favorite hiker";
+        $hikersERROR = true;
+    }
+    
+    if ($date != "") {
+        if (!verifyAlphaNum($date)) {
+            $errorMsg[] = "Your comments appear to have extra characters that are not allowed.";
+            $dateERROR = true;
+        }
+    }
     
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     //
@@ -125,6 +145,7 @@ if (isset($_POST["btnSubmit"])) {
         //$dataRecord[] = $firstName;
         //$dataRecord[] = $email;
         $dataRecord[] = $hikers;
+        $dataRecord[] = $date;
     
         // setup csv file
         $myFolder = 'data/';
@@ -249,29 +270,42 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
           id = "frmHiker"
           method = "post">
 
-          <fieldset  class="listbox <?php if ($hikersERROR) print ' mistake'; ?>">
-            <p>
-            <legend>Favorite Hiker</legend>
-                <select id="FavoriteHiker" 
+            <fieldset  class="listbox <?php if ($hikersERROR) print ' mistake'; ?>">
+                <p>
+                <legend>Favorite Hiker</legend>
+                    <select id="FavoriteHiker" 
                         name="lstFavoriteHiker" 
                         tabindex="520" >
-                    <option <?php if ($hikers == "Ian Doten") print " selected "; ?>
-                        value="Ian Doten">Ian Doten</option>
+                        <option <?php if ($hikers == "Ian Doten") print " selected "; ?>
+                            value="Ian Doten">Ian Doten</option>
 
-                    <option <?php if ($hikers == "Emalee Sprague") print " selected "; ?>
-                        value="Emalee Sprague">Emalee Sprague</option>
+                        <option <?php if ($hikers == "Emalee Sprague") print " selected "; ?>
+                            value="Emalee Sprague">Emalee Sprague</option>
 
-                    <option <?php if ($hikers == "Heidi Grace") print " selected "; ?>
-                        value="Heidi Grace">Heidi Grace</option>
+                        <option <?php if ($hikers == "Heidi Grace") print " selected "; ?>
+                            value="Heidi Grace">Heidi Grace</option>
                     
-                    <option <?php if ($hikers == "Conor Barrett") print " selected "; ?>
-                        value="Conor Barrett">Conor Barrett</option>
+                        <option <?php if ($hikers == "Conor Barrett") print " selected "; ?>
+                            value="Conor Barrett">Conor Barrett</option>
                     
-                    <option <?php if ($hikers == "Howie Woods") print " selected "; ?>
-                        value="Howie Woods">Howie Woods</option>
-        </select>
-    </p>
-</fieldset> <!-- ends contact -->
+                        <option <?php if ($hikers == "Howie Woods") print " selected "; ?>
+                            value="Howie Woods">Howie Woods</option>
+                    </select>
+                </p>
+            </fieldset> <!-- ends list -->
+            
+            <fieldset class="textarea">
+                <p>
+                    <label  class="required"for="txtDate">Date</label>
+                    <textarea <?php if ($dateERROR) print 'class="mistake"'; ?>
+                        id="txtDate" 
+                        name="txtDate" 
+                        onfocus="this.select()" 
+                        accesskey=""tabindex="200"><?php print $date; ?></textarea>
+                    <!-- NOTE: no blank spaces inside the text area, be sure to close 
+                        the text area directly -->
+                </p>
+            </fieldset> <!-- ends date -->
 
             <fieldset class="buttons">
                 <legend></legend>
