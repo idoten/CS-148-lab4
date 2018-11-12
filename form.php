@@ -34,8 +34,11 @@ print PHP_EOL . '<!-- SECTION: 1b form variables -->' . PHP_EOL;
 //$firstName = "";       
 //$email = "your-email@uvm.edu";
 $hikers = "hikers"; // hikers list box
-$date = ""; //date text box
-$trails = "Camel's Hump"; //trails check box
+$trails = "trails"; //trails check box
+////$date = "mm/dd/yyyy";
+$dateMonth = "mm"; //date text box
+$dateDay = "dd";
+$dateYear = "yyyy";
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
 print PHP_EOL . '<!-- SECTION: 1c form error flags -->' . PHP_EOL;
@@ -45,8 +48,11 @@ print PHP_EOL . '<!-- SECTION: 1c form error flags -->' . PHP_EOL;
 //$firstNameERROR = false;
 //$emailERROR = false;     
 $hikersERROR = false;
-$dateERROR = false;
 $trailsERROR = false;
+//$dateERROR = false;
+$dateMonthERROR = false;
+$dateDayERROR = false;
+$dateYearERROR =false;
 ////%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
 print PHP_EOL . '<!-- SECTION: 1d misc variables -->' . PHP_EOL;
@@ -83,8 +89,11 @@ if (isset($_POST["btnSubmit"])) {
     //$email = filter_var($_POST["txtEmail"], FILTER_SANITIZE_EMAIL);       
         
     $hikers = htmlentities($_POST["lstFavoriteHiker"], ENT_QUOTES, "UTF-8");
-    $date = htmlentities($_POST["txtDate"], ENT_QUOTES, "UTF-8");
     $trails = htmlentities($_POST["radTrails"], ENT_QUOTES, "UTF-8");
+    //$date = htmlentities($_POST["txtDate"], ENT_QUOTES, "UTF-8");
+    $dateMonth = htmlentities($_POST["txtDateMonth"], ENT_QUOTES, "UTF-8");
+    $dateDay = htmlentities($_POST["txtDateDay"], ENT_QUOTES, "UTF-8");
+    $dateYear = htmlentities($_POST["txtDateYear"], ENT_QUOTES, "UTF-8");
     
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     //
@@ -112,22 +121,123 @@ if (isset($_POST["btnSubmit"])) {
     //    $emailERROR = true;    
     //}    
     
+    //hikers error
     if ($hikers == "") {
-        $errorMsg[] = "Please choose a favorite hiker";
+        $errorMsg[] = "Please choose a hiker";
+        $hikersERROR = true;
+    }
+    if ($hikers != "1" AND $hikers != "2" AND $hikers != "3" 
+            AND $hikers != "4" AND $hikers != "5"){
+        $errorMsg[] = "Please choose a proper hiker";
         $hikersERROR = true;
     }
     
-    if ($date != "") {
-        if (!verifyAlphaNum($date)) {
-            $errorMsg[] = "Your comments appear to have extra characters that are not allowed.";
-            $dateERROR = true;
-        }
-    }
-    
-    if ($trails != "Camel's Hump" AND $trails != "Snake Mountain" AND $trails != "Prospect Rock"
-            AND $trails != "Skylight Pond" AND $trails != "Mount Pisgah"){
+    //trails
+    if ($trails != "1" AND $trails != "2" AND $trails != "3"
+            AND $trails != "4" AND $trails != "5"){
         $errorMsg[] = "Please choose a trail";
         $trailsERROR = true;
+    }
+    
+    //!date!
+    //if ($date != "") {
+        //if (!verifyAlphaNum($date)) {
+            //$errorMsg[] = "Your comments appear to have extra characters that are not allowed.";
+            //$dateERROR = true;
+        //}
+    //}
+    
+    //!place holder date error!
+    if (verifyNumeric($dateMonth)) {
+        if ($dateMonth < 1 OR $dateMonth > 12) {
+            $errorMsg[] = "Your month does not appear to be a valid month";
+            $dateMonthERROR = true;
+        }
+    } else{
+        $errorMsg[] = "Your month does not appear to be in month format";
+        $dateMonthERROR = true;
+    }
+    if ($dateMonth == "") {
+        $errorMsg[] = "Please enter a date month";
+        $dateMonthERROR = true;
+    }
+        if ($dateMonth == "1"){
+            $dateMonth == "01";
+        }
+        if ($dateMonth == "2"){
+            $dateMonth == "02";
+        } 
+        if ($dateMonth == "3"){
+            $dateMonth == "03";
+        } 
+        if ($dateMonth == "4"){
+            $dateMonth == "04";
+        } 
+        if ($dateMonth == "5"){
+            $dateMonth == "05";
+        } 
+        if ($dateMonth == "6"){
+            $dateMonth == "06";
+        } 
+        if ($dateMonth == "7"){
+            $dateMonth == "07";
+        } 
+        if ($dateMonth == "8"){
+            $dateMonth == "08";
+        } 
+        if ($dateMonth == "9"){
+            $dateMonth == "09";
+        }
+    
+    if (verifyNumeric($dateDay)) {
+        if ($dateDay < 1 OR $dateDay > 31) {
+            $errorMsg[] = "Your day does not appear to be a valid day";
+            $dateDayERROR = true;
+        }
+    } else{
+        $errorMsg[] = "Your day does not appear to be in day format";
+        $dateDayERROR = true;
+    }
+        if ($dateDay == "1"){
+            $dateDay == "01";
+        }
+        if ($dateDay == "2"){
+            $dateDay == "02";
+        } 
+        if ($dateDay == "3"){
+            $dateDay == "03";
+        } 
+        if ($dateDay == "4"){
+            $dateDay == "04";
+        } 
+        if ($dateDay == "5"){
+            $dateDay == "05";
+        } 
+        if ($dateDay == "6"){
+            $dateDay == "06";
+        } 
+        if ($dateDay == "7"){
+            $dateDay == "07";
+        } 
+        if ($dateDay == "8"){
+            $dateDay == "08";
+        } 
+        if ($dateDay == "9"){
+            $dateDay == "09";
+        }
+        
+    if (verifyNumeric($dateYear)) {
+        if ($dateYear < 1950 OR $dateYear > 2018) {
+            $errorMsg[] = "Your year does not appear to be a valid year";
+            $dateYearERROR = true;
+        }
+    } else{
+        $errorMsg[] = "Your month does not appear to be in year format";
+        $dateYearERROR = true;
+    }
+    if ($dateMonth == "") {
+        $errorMsg[] = "Please enter a date year ";
+        $dateYearERROR = true;
     }
     
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -151,18 +261,59 @@ if (isset($_POST["btnSubmit"])) {
         
         // assign values to the dataRecord array
         //$dataRecord[] = $firstName;
-        //$dataRecord[] = $email;
+        //$dataRecord[] = $email; 
+        
+        $date = ($dateYear . "-" . $dateMonth . "-" . $dateDay);  //!TO COMMENT OUT ONCE FIXED!
         $dataRecord[] = $hikers;
-        $dataRecord[] = $date;
         $dataRecord[] = $trails;
+        $dataRecord[] = $date;
+        
+         try {
+            $thisDatabaseWriter->db->beginTransaction();
+
+            $query = 'INSERT INTO tblHikersTrails SET ';
+
+            $query .= 'fnkHikersId = ?, ';
+            $query .= 'fnkTrailsId = ?, ';
+            $query .= 'fldDateHiked = ? ';
+
+            if (DEBUG) {
+                $thisDatabaseWriter->TestSecurityQuery($query, 0);
+                print_r($dataRecord);
+            }
+
+            if ($thisDatabaseWriter->querySecurityOk($query, 0)) {
+                $query = $thisDatabaseWriter->sanitizeQuery($query);
+                
+                $results = $thisDatabaseWriter->insert($query, $dataRecord);
+                
+                $primaryKey = $thisDatabaseWriter->lastInsert();
+
+                //if (DEBUG) {
+                    print "<p>pmk= " . $primaryKey;
+                //}
+            }
+
+            // all sql statements are done so lets commit to our changes
+
+            $dataEntered = $thisDatabaseWriter->db->commit();
+            
+            //if (DEBUG)
+                print "<p>transaction complete ";
+        } catch (PDOException $e) {
+            $thisDatabaseWriter->db->rollback();
+            //if (DEBUG)
+                print "Error!: " . $e->getMessage() . "</br>";
+            $errorMsg[] = "There was a problem with accepting your data please contact us directly.";
+        }
     
         // setup csv file
-        $myFolder = 'data/';
-        $myFileName = 'lab4';
-        $fileExt = '.csv';
-        $filename = $myFolder . $myFileName . $fileExt;
+        //$myFolder = 'data/';
+        //$myFileName = 'lab4';
+        //$fileExt = '.csv';
+        //$filename = $myFolder . $myFileName . $fileExt;
     
-        if ($debug) print PHP_EOL . '<p>filename is ' . $filename;
+        //if ($debug) print PHP_EOL . '<p>filename is ' . $filename;
     
         // now we just open the file for append
         //$file = fopen($filename, 'a');
@@ -285,65 +436,97 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                     <select id="FavoriteHiker" 
                         name="lstFavoriteHiker" 
                         tabindex="520" >
-                        <option <?php if ($hikers == "Ian Doten") print " selected "; ?>
-                            value="Ian Doten">Ian Doten</option>
+                        <option <?php if ($hikers == "1") print " selected "; ?>
+                            value="1">Ian Doten</option>
 
-                        <option <?php if ($hikers == "Emalee Sprague") print " selected "; ?>
-                            value="Emalee Sprague">Emalee Sprague</option>
+                        <option <?php if ($hikers == "2") print " selected "; ?>
+                            value="2">Emalee Sprague</option>
 
-                        <option <?php if ($hikers == "Heidi Grace") print " selected "; ?>
-                            value="Heidi Grace">Heidi Grace</option>
+                        <option <?php if ($hikers == "3") print " selected "; ?>
+                            value="3">Heidi Grace</option>
                     
-                        <option <?php if ($hikers == "Conor Barrett") print " selected "; ?>
-                            value="Conor Barrett">Conor Barrett</option>
+                        <option <?php if ($hikers == "4") print " selected "; ?>
+                            value="4">Conor Barrett</option>
                     
-                        <option <?php if ($hikers == "Howie Woods") print " selected "; ?>
-                            value="Howie Woods">Howie Woods</option>
+                        <option <?php if ($hikers == "5") print " selected "; ?>
+                            value="5">Howie Woods</option>
                     </select>
                 </p>
             </fieldset> <!-- ends list -->
             
-            <fieldset class="textarea">
+            <!--<fieldset class="textarea">
                 <p>
-                    <label  class="required"for="txtDate">Date</label>
-                    <textarea <?php if ($dateERROR) print 'class="mistake"'; ?>
+                   <label  class="required"for="txtDate">Date</label>
+                    <textarea <?//php if ($dateERROR) print 'class="mistake"'; ?>
                         id="txtDate" 
                         name="txtDate" 
                         onfocus="this.select()" 
-                        accesskey=""tabindex="200"><?php print $date; ?></textarea>
+                        accesskey=""tabindex="200"><?//php print $date; ?></textarea>
+                    <!-- NOTE: no blank spaces inside the text area, be sure to close 
+                        the text area directly -->
+                <!--</p>
+            </fieldset> <!-- ends date --> 
+                
+            <fieldset class="textarea">
+                <p>
+                   <label  class="required"for="txtDateMonth">Date</label>
+                    <textarea <?php if ($dateMonthERROR) print 'class="mistake"'; ?>
+                        id="txtDateMonth" 
+                        name="txtDateMonth" 
+                        onfocus="this.select()" 
+                        accesskey=""tabindex="200"><?php print $dateMonth; ?></textarea>
                     <!-- NOTE: no blank spaces inside the text area, be sure to close 
                         the text area directly -->
                 </p>
-            </fieldset> <!-- ends date -->
+                <p>
+                   <label  class="required"for="txtDateDay">/</label>
+                    <textarea <?php if ($dateMonthERROR) print 'class="mistake"'; ?>
+                        id="txtDateDay" 
+                        name="txtDateDay" 
+                        onfocus="this.select()" 
+                        accesskey=""tabindex="200"><?php print $dateDay; ?></textarea>
+                    <!-- NOTE: no blank spaces inside the text area, be sure to close 
+                        the text area directly -->
+                </p>
+                <p>
+                   <label  class="required"for="txtDateYear">/</label>
+                    <textarea <?php if ($dateYearERROR) print 'class="mistake"'; ?>
+                        id="txtDate" 
+                        name="txtDateYear" 
+                        onfocus="this.select()" 
+                        accesskey=""tabindex="200"><?php print $dateYear; ?></textarea>
+                    <!-- NOTE: no blank spaces inside the text area, be sure to close 
+                        the text area directly -->
+                </p>
+            </fieldset> <!-- ends date --> 
             
             <fieldset class="radio <?php if ($trailsERROR) print ' mistake'; ?>">
                 <legend>What trail was hiked?</legend>
-                <p>    
-                    <label class="radio-field"><input type="radio" id="radTrailCamel" name="radTrails" value="Camel's Hump" tabindex="572" 
-                            alt=""accesskey=""accept=""
-            <?php if ($trails == "Camel's Hump") echo ' checked="checked" '; ?>>
+                <p>
+                    <label class="radio-field"><input type="radio" id="radTrailCamel" name="radTrails" value="1" tabindex="574" 
+            <?php if ($trails == "1") echo ' checked="checked" '; ?>>
                     Camel's Hump</label>
                 </p>
                 <p>
-                    <label class="radio-field"><input type="radio" id="radTrailSnake" name="radTrails" value="Snake Mountain" tabindex="574" 
-            <?php if ($trails == "Snake Mountain") echo ' checked="checked" '; ?>>
+                    <label class="radio-field"><input type="radio" id="radTrailSnake" name="radTrails" value="2" tabindex="574" 
+            <?php if ($trails == "2") echo ' checked="checked" '; ?>>
                     Snake Mountain</label>
                 </p>
 
                 <p>
-                    <label class="radio-field"><input type="radio" id="radTrailProspect" name="radTrails" value="Prospect Rock" tabindex="574" 
-            <?php if ($trails == "Prospect Rock") echo ' checked="checked" '; ?>>
+                    <label class="radio-field"><input type="radio" id="radTrailProspect" name="radTrails" value="3" tabindex="574" 
+            <?php if ($trails == "3") echo ' checked="checked" '; ?>>
                     Prospect Rock</label>
                 </p>
                 <p>
-                    <label class="radio-field"><input type="radio" id="radTrailSkylight" name="radTrails" value="Skylight Pond" tabindex="574" 
-            <?php if ($trails == "Skylight Pond") echo ' checked="checked" '; ?>>
+                    <label class="radio-field"><input type="radio" id="radTrailSkylight" name="radTrails" value="4" tabindex="574" 
+            <?php if ($trails == "4") echo ' checked="checked" '; ?>>
                     Skylight Pond</label>
                 </p>
 
                 <p>
-                    <label class="radio-field"><input type="radio" id="radTrailMount" name="radTrails" value="Mount Pisgah" tabindex="574" 
-            <?php if ($trails == "Mount Pisgah") echo ' checked="checked" '; ?>>
+                    <label class="radio-field"><input type="radio" id="radTrailMount" name="radTrails" value="5" tabindex="574" 
+            <?php if ($trails == "5") echo ' checked="checked" '; ?>>
                     Mount Pisgah</label>
                 </p>
             </fieldset> <!-- ends radio -->
