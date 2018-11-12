@@ -35,6 +35,7 @@ print PHP_EOL . '<!-- SECTION: 1b form variables -->' . PHP_EOL;
 //$email = "your-email@uvm.edu";
 $hikers = "hikers"; // hikers list box
 $date = ""; //date text box
+$trails = "Camel's Hump"; //trails check box
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
 print PHP_EOL . '<!-- SECTION: 1c form error flags -->' . PHP_EOL;
@@ -45,6 +46,7 @@ print PHP_EOL . '<!-- SECTION: 1c form error flags -->' . PHP_EOL;
 //$emailERROR = false;     
 $hikersERROR = false;
 $dateERROR = false;
+$trailsERROR = false;
 ////%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
 print PHP_EOL . '<!-- SECTION: 1d misc variables -->' . PHP_EOL;
@@ -82,7 +84,7 @@ if (isset($_POST["btnSubmit"])) {
         
     $hikers = htmlentities($_POST["lstFavoriteHiker"], ENT_QUOTES, "UTF-8");
     $date = htmlentities($_POST["txtDate"], ENT_QUOTES, "UTF-8");
-    
+    $trails = htmlentities($_POST["radTrails"], ENT_QUOTES, "UTF-8");
     
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     //
@@ -122,6 +124,12 @@ if (isset($_POST["btnSubmit"])) {
         }
     }
     
+    if ($trails != "Camel's Hump" AND $trails != "Snake Mountain" AND $trails != "Prospect Rock"
+            AND $trails != "Skylight Pond" AND $trails != "Mount Pisgah"){
+        $errorMsg[] = "Please choose a trail";
+        $trailsERROR = true;
+    }
+    
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     //
     print PHP_EOL . '<!-- SECTION: 2d Process Form - Passed Validation -->' . PHP_EOL;
@@ -146,6 +154,7 @@ if (isset($_POST["btnSubmit"])) {
         //$dataRecord[] = $email;
         $dataRecord[] = $hikers;
         $dataRecord[] = $date;
+        $dataRecord[] = $trails;
     
         // setup csv file
         $myFolder = 'data/';
@@ -228,8 +237,8 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
     
         print $message;
     } else {       
-     print '<h2>Pick a favorite hiker</h2>';
-     print '<p class="form-heading">Thank you for your help.</p>';
+     print '<h2>Please enter a new hiking venture </h2>';
+     print '<p class="form-heading">Please enter a new hiking venure.</p>';
      
         //####################################
         //
@@ -306,7 +315,39 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                         the text area directly -->
                 </p>
             </fieldset> <!-- ends date -->
+            
+            <fieldset class="radio <?php if ($trailsERROR) print ' mistake'; ?>">
+                <legend>What trail was hiked?</legend>
+                <p>    
+                    <label class="radio-field"><input type="radio" id="radTrailCamel" name="radTrails" value="Camel's Hump" tabindex="572" 
+                            alt=""accesskey=""accept=""
+            <?php if ($trails == "Camel's Hump") echo ' checked="checked" '; ?>>
+                    Camel's Hump</label>
+                </p>
+                <p>
+                    <label class="radio-field"><input type="radio" id="radTrailSnake" name="radTrails" value="Snake Mountain" tabindex="574" 
+            <?php if ($trails == "Snake Mountain") echo ' checked="checked" '; ?>>
+                    Snake Mountain</label>
+                </p>
 
+                <p>
+                    <label class="radio-field"><input type="radio" id="radTrailProspect" name="radTrails" value="Prospect Rock" tabindex="574" 
+            <?php if ($trails == "Prospect Rock") echo ' checked="checked" '; ?>>
+                    Prospect Rock</label>
+                </p>
+                <p>
+                    <label class="radio-field"><input type="radio" id="radTrailSkylight" name="radTrails" value="Skylight Pond" tabindex="574" 
+            <?php if ($trails == "Skylight Pond") echo ' checked="checked" '; ?>>
+                    Skylight Pond</label>
+                </p>
+
+                <p>
+                    <label class="radio-field"><input type="radio" id="radTrailMount" name="radTrails" value="Mount Pisgah" tabindex="574" 
+            <?php if ($trails == "Mount Pisgah") echo ' checked="checked" '; ?>>
+                    Mount Pisgah</label>
+                </p>
+            </fieldset> <!-- ends radio -->
+            
             <fieldset class="buttons">
                 <legend></legend>
                 <input class = "button" id = "btnSubmit" name = "btnSubmit" tabindex = "900" type = "submit" value = "Submit" >
