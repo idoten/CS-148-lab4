@@ -1,15 +1,5 @@
 <?php
 include 'top.php';
-
-//$records = '';
-
-//$query = 'SELECT pmkHikersId, fldFirstName, fldLastName, FROM tblHikers';
-
-// NOTE: The full method call would be:
-//           $thisDatabaseReader->querySecurityOk($query, 0, 0, 0, 0, 0)
-//if ($thisDatabaseReader->querySecurityOk($query, 0)) {
-    //$query = $thisDatabaseReader->sanitizeQuery($query);
-    //$records = $thisDatabaseReader->select($query, '');
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //     
 print  PHP_EOL . '<!-- SECTION: 1 Initialize variables -->' . PHP_EOL;       
@@ -20,11 +10,11 @@ print  PHP_EOL . '<!-- SECTION: 1a. debugging setup -->' . PHP_EOL;
 // Normally i wrap this in a debug statement but for now i want to always
 // display it. when you first come to the form it is empty. when you submit the
 // form it displays the contents of the post array.
-// if ($debug){ 
+if ($debug){ 
     print '<p>Post Array:</p><pre>';
     print_r($_POST);
     print '</pre>';
-// }
+}
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
 print PHP_EOL . '<!-- SECTION: 1b form variables -->' . PHP_EOL;
@@ -227,12 +217,12 @@ if (isset($_POST["btnSubmit"])) {
         }
         
     if (verifyNumeric($dateYear)) {
-        if ($dateYear < 1950 OR $dateYear > 2018) {
+        if ($dateYear < 1950 OR $dateYear > 2050) {
             $errorMsg[] = "Your year does not appear to be a valid year";
             $dateYearERROR = true;
         }
     } else{
-        $errorMsg[] = "Your month does not appear to be in year format";
+        $errorMsg[] = "Your year does not appear to be in year format";
         $dateYearERROR = true;
     }
     if ($dateMonth == "") {
@@ -289,20 +279,20 @@ if (isset($_POST["btnSubmit"])) {
                 
                 $primaryKey = $thisDatabaseWriter->lastInsert();
 
-                //if (DEBUG) {
+                if (DEBUG) {
                     print "<p>pmk= " . $primaryKey;
-                //}
+                }
             }
 
             // all sql statements are done so lets commit to our changes
 
             $dataEntered = $thisDatabaseWriter->db->commit();
             
-            //if (DEBUG)
+            if (DEBUG)
                 print "<p>transaction complete ";
         } catch (PDOException $e) {
             $thisDatabaseWriter->db->rollback();
-            //if (DEBUG)
+            if (DEBUG)
                 print "Error!: " . $e->getMessage() . "</br>";
             $errorMsg[] = "There was a problem with accepting your data please contact us directly.";
         }
@@ -477,8 +467,7 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                         accesskey=""tabindex="200"><?php print $dateMonth; ?></textarea>
                     <!-- NOTE: no blank spaces inside the text area, be sure to close 
                         the text area directly -->
-                </p>
-                <p>
+
                    <label  class="required"for="txtDateDay">/</label>
                     <textarea <?php if ($dateMonthERROR) print 'class="mistake"'; ?>
                         id="txtDateDay" 
@@ -487,8 +476,7 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
                         accesskey=""tabindex="200"><?php print $dateDay; ?></textarea>
                     <!-- NOTE: no blank spaces inside the text area, be sure to close 
                         the text area directly -->
-                </p>
-                <p>
+
                    <label  class="required"for="txtDateYear">/</label>
                     <textarea <?php if ($dateYearERROR) print 'class="mistake"'; ?>
                         id="txtDate" 
@@ -503,29 +491,29 @@ print PHP_EOL . '<!-- SECTION 3 Display Form -->' . PHP_EOL;
             <fieldset class="radio <?php if ($trailsERROR) print ' mistake'; ?>">
                 <legend>What trail was hiked?</legend>
                 <p>
-                    <label class="radio-field"><input type="radio" id="radTrailCamel" name="radTrails" value="1" tabindex="574" 
+                    <label class="radio-field"><input type="radio" id="radTrail" name="radTrails" value="1" tabindex="574" 
             <?php if ($trails == "1") echo ' checked="checked" '; ?>>
                     Camel's Hump</label>
                 </p>
                 <p>
-                    <label class="radio-field"><input type="radio" id="radTrailSnake" name="radTrails" value="2" tabindex="574" 
+                    <label class="radio-field"><input type="radio" id="radTrail" name="radTrails" value="2" tabindex="574" 
             <?php if ($trails == "2") echo ' checked="checked" '; ?>>
                     Snake Mountain</label>
                 </p>
 
                 <p>
-                    <label class="radio-field"><input type="radio" id="radTrailProspect" name="radTrails" value="3" tabindex="574" 
+                    <label class="radio-field"><input type="radio" id="radTrail" name="radTrails" value="3" tabindex="574" 
             <?php if ($trails == "3") echo ' checked="checked" '; ?>>
                     Prospect Rock</label>
                 </p>
                 <p>
-                    <label class="radio-field"><input type="radio" id="radTrailSkylight" name="radTrails" value="4" tabindex="574" 
+                    <label class="radio-field"><input type="radio" id="radTrail" name="radTrails" value="4" tabindex="574" 
             <?php if ($trails == "4") echo ' checked="checked" '; ?>>
                     Skylight Pond</label>
                 </p>
 
                 <p>
-                    <label class="radio-field"><input type="radio" id="radTrailMount" name="radTrails" value="5" tabindex="574" 
+                    <label class="radio-field"><input type="radio" id="radTrail" name="radTrails" value="5" tabindex="574" 
             <?php if ($trails == "5") echo ' checked="checked" '; ?>>
                     Mount Pisgah</label>
                 </p>
